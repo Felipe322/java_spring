@@ -16,6 +16,11 @@ pipeline {
     }
 
     stages {
+        stage('Clean workspace') {
+            steps {
+                cleanWs()
+            }
+        }
         stage('Clone repositorio') {
             steps {
                 checkout scm
