@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'maven:3.9.5'
+    }
+    
     options {
         // Cancelar builds viejos en cola
         timeout(time: 15, unit: 'MINUTES')
