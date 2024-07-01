@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         maven 'maven:3.9.5'
-        docker 'docker'
+        //docker 'docker'
     }
     
     options {
@@ -22,11 +22,11 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        //stage('Docker') {
-          //  steps {
-            //    sh 'docker --version'
-            //}
-        //}
+        stage('Docker') {
+            steps {
+                sh 'docker --version'
+            }
+        }
     }
 
     post {
