@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         maven 'maven:3.9.5'
-        docker 'docker'
+        //docker 'docker'
     }
     
     options {
