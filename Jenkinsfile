@@ -3,10 +3,11 @@ pipeline {
 
     tools {
         maven 'maven:3.9.5'
+        docker 'docker'
     }
     
     options {
-        // Cancelar builds viejos en cola
+        disableConcurrentBuilds() 
         timeout(time: 15, unit: 'MINUTES')
     }
 
@@ -21,10 +22,14 @@ pipeline {
                 sh 'mvn test'
             }
         }
+        stage('Test') {
+            steps {
+                sh 'docker --version'
+            }
+        }
     }
 
     post {
-        // Bloque post para acciones post-ejecución
         always {
             echo 'Ejecución completada'
             cleanWs()
