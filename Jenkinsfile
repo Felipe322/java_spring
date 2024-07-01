@@ -21,11 +21,13 @@ pipeline {
                 cleanWs()
             }
         }
+
         stage('Clone repositorio') {
             steps {
                 checkout scm
             }
         }
+
         stage('Test') {
             steps {
                 //sh 'mvn test'
@@ -36,7 +38,8 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 script {
-                    docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}")
+                    //docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}")
+                    sh 'echo BUILD DOCKER IMAGE'
                     sh 'docker images -a'
                 }
             }
@@ -53,7 +56,7 @@ pipeline {
 
     post {
         always {
-            echo 'Ejecución completada'
+            echo 'Ejecución completada.'
             cleanWs()
         }
         success {
