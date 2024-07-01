@@ -12,10 +12,11 @@ pipeline {
                 checkout scm
             }
         }
-        stage('List') {
-            steps {
-                sh 'ls -la'
-                sh 'pwd'
+        stages{
+            stage('Test') {
+                steps {
+                    sh 'mvn test'
+                }
             }
         }
     }
