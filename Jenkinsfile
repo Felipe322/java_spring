@@ -26,7 +26,7 @@ pipeline {
         stage('Build images') {
             steps {
                 script {
-                    image = docker.build("${FULL_URL_GCR}")
+                    image = docker.build("example:qqq")
                 }
             }
         }
