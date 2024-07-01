@@ -1,8 +1,9 @@
 pipeline {
-    agent any
+    agent {
+            docker { image 'node:20.15.0-alpine3.20' }
+        }
     tools {
         maven 'maven:3.9.5'
-        docker 'test'
     }
     
     options {
