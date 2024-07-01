@@ -22,6 +22,14 @@ pipeline {
                 sh 'mvn test'
             }
         }
+
+        stage('Build images') {
+            steps {
+                script {
+                    image = docker.build("${FULL_URL_GCR}")
+                }
+            }
+        }
         stage('Docker') {
             steps {
                 script{
