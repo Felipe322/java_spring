@@ -4,6 +4,11 @@ pipeline {
     //tools {
       //  maven 'maven:3.9.5'
     //}
+
+    environment {
+        DOCKER_IMAGE_NAME = 'ecr/example/java'
+        DOCKER_IMAGE_TAG = '1.0'
+    }
     
     options {
         // disableConcurrentBuilds() 
@@ -23,10 +28,11 @@ pipeline {
             }
         }
 
-        stage('Build images') {
+        stage('Build Docker images') {
             steps {
                 script {
-                    sh 'docker --version'
+                    docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}")
+                    sh 'docker images -a'
                 }
             }
         }
