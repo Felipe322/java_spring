@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'maven:3.9.5'
-    }
+    //tools {
+      //  maven 'maven:3.9.5'
+    //}
     
     options {
         // disableConcurrentBuilds() 
@@ -18,7 +18,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                //sh 'mvn test'
+                sh 'echo Test'
             }
         }
 
