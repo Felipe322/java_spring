@@ -22,11 +22,11 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('Docker') {
-            steps {
-                sh 'docker --version'
-            }
-        }
+        //stage('Docker') {
+          //  steps {
+            //    sh 'docker --version'
+            //}
+        //}
     }
 
     post {
