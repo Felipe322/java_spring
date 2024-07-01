@@ -28,11 +28,19 @@ pipeline {
             }
         }
 
-        stage('Build Docker images') {
+        stage('Build Docker image') {
             steps {
                 script {
                     docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}")
                     sh 'docker images -a'
+                }
+            }
+        }
+
+        stage('Push Docker image') {
+            steps {
+                script {
+                    sh 'echo Docker Push to ECR'
                 }
             }
         }
