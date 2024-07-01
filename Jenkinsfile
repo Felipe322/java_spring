@@ -1,7 +1,6 @@
 pipeline {
-    agent {
-            docker { image 'node:20.15.0-alpine3.20' }
-        }
+    agent any
+
     tools {
         maven 'maven:3.9.5'
     }
@@ -26,13 +25,6 @@ pipeline {
         stage('Build images') {
             steps {
                 script {
-                    sh 'node --version'
-                }
-            }
-        }
-        stage('Docker') {
-            steps {
-                script{
                     sh 'docker --version'
                 }
             }
