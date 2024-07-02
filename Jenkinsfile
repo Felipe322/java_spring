@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    //tools {
-      //  maven 'maven:3.9.5'
-    //}
+    tools {
+        maven 'maven:3.9.5'
+    }
 
     environment {
         DOCKER_IMAGE_NAME = 'ecr/example/java'
@@ -30,15 +30,15 @@ pipeline {
 
         stage('Test') {
             steps {
-                //sh 'mvn test'
-                sh 'echo Test'
+                sh 'mvn test'
+                //sh 'echo Test'
             }
         }
 
         stage('Build Docker image') {
             steps {
                 script {
-                    //docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}")
+                    docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}")
                     sh 'echo BUILD DOCKER IMAGE'
                     sh 'docker images -a'
                 }
