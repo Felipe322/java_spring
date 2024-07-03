@@ -30,11 +30,11 @@ pipeline {
 
         stage('Sonar') {
             steps {
-                sh 'mvn clean verify sonar:sonar \
+                sh "mvn clean verify sonar:sonar \
                     -Dsonar.projectKey=Ejemplo-java \
                     -Dsonar.projectName='Ejemplo-java' \
                     -Dsonar.host.url=http://sonarqube:9000 \
-                    -Dsonar.token=sqp_181431c0d6f4c7453c8700134cbdd34e5d22ad6c'
+                    -Dsonar.token=sqp_181431c0d6f4c7453c8700134cbdd34e5d22ad6c"
             }
         }
     }
