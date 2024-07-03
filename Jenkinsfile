@@ -28,49 +28,13 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Sonar') {
             steps {
-                sh 'mvn test'
-                //sh 'echo Test'
-            }
-        }
-
-        stage('Build Docker image') {
-            steps {
-                script {
-                    docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}")
-                    sh 'echo BUILD DOCKER IMAGE'
-                    sh 'docker images -a'
-                }
-            }
-        }
-
-       stage('Scan Docker image') {
-            steps {
-                script {
-                    // Run Trivy to scan the Docker image
-                    def trivyOutput = sh(script: "trivy image ${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}", returnStdout: true).trim()
-
-                    // Display Trivy scan results
-                    println trivyOutput
-
-                    // Check if vulnerabilities were found
-                    if (trivyOutput.contains("Total: 0")) {
-                        echo "No vulnerabilities found in the Docker image."
-                    } else {
-                        echo "Vulnerabilities found in the Docker image."
-                        // You can take further actions here based on your requirements
-                        // For example, failing the build if vulnerabilities are found
-                        // error "Vulnerabilities found in the Docker image."
-                    }
-                }
-            }
-        }
-        stage('Push Docker image') {
-            steps {
-                script {
-                    sh 'echo Docker Push to ECR'
-                }
+                sh 'mvn clean verify sonar:sonar \
+                    -Dsonar.projectKey=Ejemplo-java \
+                    -Dsonar.projectName='Ejemplo-java' \
+                    -Dsonar.host.url=http://sonarqube:9000 \
+                    -Dsonar.token=sqp_181431c0d6f4c7453c8700134cbdd34e5d22ad6c'
             }
         }
     }
