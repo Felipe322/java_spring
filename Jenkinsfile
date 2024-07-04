@@ -37,11 +37,13 @@ pipeline {
 
             steps {
                 withSonarQubeEnv("${env.SONAR_SERVER}") {
+                    sh 'mvn clean install'
                     sh "${scannerHome}/bin/sonar-scanner \
                                 -Dsonar.projectKey=examplejava \
                                 -Dsonar.projectName=examplejava \
                                 -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
-                                -Dsonar.sources=src"
+                                -Dsonar.sources=src \
+                                -Dsonar.java.binaries=target/classes"
                 }
             }
         }
