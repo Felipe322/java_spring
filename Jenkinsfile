@@ -5,11 +5,13 @@ pipeline {
         maven 'maven:3.9.5'
       }
 
-//    environment {
-//        DOCKER_IMAGE_NAME = 'ecr/example/java'
-//        DOCKER_IMAGE_TAG = '1.0'
-//   }
-    
+    environment {
+        DOCKER_IMAGE_NAME = 'ecr/example/java'
+        DOCKER_IMAGE_TAG = '1.0'
+        SONAR_SCANNER = 'sonar-scanner'
+        SONAR_SERVER = 'sonarqube'
+   }
+
     options {
         disableConcurrentBuilds() 
         timeout(time: 15, unit: 'MINUTES')
@@ -29,12 +31,17 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            environment {
+                scannerHome = tool "${env.SONAR_SCANNER}"
+            }
+
             steps {
-                script {
-                    withSonarQubeEnv('sonarqube') {
-                        // Run SonarQube analysis
-                        sh 'mvn sonar:sonar'
-                    }
+                withSonarQubeEnv("${env.SONAR_SERVER}") {
+                    sh "${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=examplejava \
+                                -Dsonar.projectName=examplejava \
+                                -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
+                                -Dsonar.sources=src"
                 }
             }
         }
