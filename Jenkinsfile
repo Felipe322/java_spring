@@ -1,36 +1,48 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER = 'image:test'
+    }
+
     options {
-        // Cancelar builds viejos en cola
+        disableConcurrentBuilds() 
         timeout(time: 15, unit: 'MINUTES')
     }
 
     stages {
-        stage('Clone repositorio') {
+
+        stage('Build Docker image') {
             steps {
-                checkout scm
+                script {
+                    docker.build("${env.DOCKER}")
+                    sh 'docker images -a'
+               }
             }
         }
-        stage('List') {
+
+        stage('Scan Docker image') {
             steps {
-                sh 'ls -la'
-                sh 'pwd'
+                script {
+                    def trivyOutput = sh(script: "trivy image ${env.DOCKER}", returnStdout: true).trim()
+                    println trivyOutput
+
+                    if (trivyOutput.contains("Total: 0")) {
+                        echo "No vulnerabilities found in the Docker image."
+                    } else {
+                        echo "Vulnerabilities found in the Docker image."
+                   }
+                }
             }
         }
+
     }
 
     post {
-        // Bloque post para acciones post-ejecución
-        always {
-            echo 'Ejecución completada'
-            cleanWs()
+            always {
+                // Limpiar recursos después del pipeline
+                sh "docker rmi ${env.DOCKER}"
+                cleanWs()
+            }
         }
-        success {
-            echo 'El pipeline se ejecutó con éxito.'
-        }
-        failure {
-            echo 'El pipeline falló.'
-        }
-    }
 }
