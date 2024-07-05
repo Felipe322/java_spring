@@ -18,18 +18,6 @@ pipeline {
     }
 
     stages {
-        stage('Clean workspace') {
-            steps {
-                cleanWs()
-            }
-        }
-
-        stage('Clone repositorio') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Test') {
             steps {
                 sh 'mvn test'
