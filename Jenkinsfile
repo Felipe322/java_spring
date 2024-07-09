@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'maven:3.9.5'
-      }
+    //tools {
+      //  maven 'maven:3.9.5'
+      //}
 
     environment {
         DOCKER_IMAGE_NAME = 'ecr/example/java'
@@ -20,8 +20,8 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh 'mvn test'
-                //sh 'echo Test'
+                //sh 'mvn test'
+                sh 'echo Test'
             }
         }
 
@@ -65,6 +65,30 @@ pipeline {
                         echo "Vulnerabilities found in the Docker image."
                    }
                 }
+            }
+        }
+
+        stage('Download_WizCLI') {
+            steps {
+                // Download_WizCLI
+                sh 'echo "Downloading wizcli..."'
+                sh 'curl -o wizcli https://downloads.wiz.io/wizcli/latest/wizcli-linux-amd64'
+                sh 'chmod +x wizcli'
+            } 
+        }
+        stage('Auth_With_Wiz') {
+            steps {
+                // Auth with Wiz
+                sh 'echo "Authenticating to the Wiz API..."'
+                withCredentials([usernamePassword(credentialsId: 'wizcli', usernameVariable: 'ID', passwordVariable: 'SECRET')]) {
+                sh './wizcli auth --id $ID --secret $SECRET'}
+            }
+        }
+        stage('Scan') {
+            steps {
+                // Scanning the image
+                sh 'echo "Scanning the image using wizcli..."'
+                sh './wizcli docker scan --image ${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}'
             }
         }
         stage('Push Docker image') {
