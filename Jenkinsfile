@@ -88,7 +88,7 @@ pipeline {
             steps {
                 // Scanning the image
                 sh 'echo "Scanning the image using wizcli..."'
-                sh './wizcli docker scan --image ecr/example/java:1.0'
+                sh './wizcli docker scan --image ecr/example/java:1.0 --driver mountWithLayers'
             }
         }
         stage('Push Docker image') {
