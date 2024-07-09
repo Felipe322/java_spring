@@ -25,23 +25,23 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            environment {
-                scannerHome = tool "${env.SONAR_SCANNER}"
-            }
+        //stage('SonarQube Analysis') {
+         //   environment {
+           //     scannerHome = tool "${env.SONAR_SCANNER}"
+            //}
 
-            steps {
-                withSonarQubeEnv("${env.SONAR_SERVER}") {
-                    sh 'mvn clean install'
-                    sh "${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey=examplejava \
-                                -Dsonar.projectName=examplejava \
-                                -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
-                                -Dsonar.sources=src \
-                                -Dsonar.java.binaries=target/classes"
-                }
-            }
-        }
+            //steps {
+              //  withSonarQubeEnv("${env.SONAR_SERVER}") {
+                //    sh 'mvn clean install'
+                  //  sh "${scannerHome}/bin/sonar-scanner \
+                     //           -Dsonar.projectKey=examplejava \
+                      //          -Dsonar.projectName=examplejava \
+                      //          -Dsonar.projectVersion=0.0.${BUILD_NUMBER} \
+                      //          -Dsonar.sources=src \
+                       //         -Dsonar.java.binaries=target/classes"
+                //}
+            //}
+        //}
 
         stage('Build Docker image') {
             steps {
