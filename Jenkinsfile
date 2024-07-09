@@ -88,7 +88,7 @@ pipeline {
             steps {
                 // Scanning the image
                 sh 'echo "Scanning the image using wizcli..."'
-                sh './wizcli docker scan --image ${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}'
+                sh './wizcli docker scan --image "${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}"'
             }
         }
         stage('Push Docker image') {
